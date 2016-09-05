@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
-  resources :fees,
-    only: [:pay, :post_pay]
+  resources :fees do
+    member do
+      get :pay
+      get :post_pay
+    end
+  end
 end
