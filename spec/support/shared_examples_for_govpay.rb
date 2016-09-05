@@ -48,7 +48,7 @@ module GovpayExample
           'finished' => false
         },
         'description' => 'TC/2016/00001 - Lodgement Fee',
-        'return_url' => 'https://replace-me-with-localhost.com/liabilities/960eb61a-a592-4e79-a5f8-c35cde24352a/post_pay',
+        'return_url' => 'https://www-integration-2.pymnt.uk/liabilities/960eb61a-a592-4e79-a5f8-c35cde24352a/post_pay',
         'reference' => '7G20160718180649',
         'created_date' => '2016-07-18T17:06:53.172Z',
         '_links' => {
@@ -89,7 +89,7 @@ module GovpayExample
           'finished' => true
         },
         'description' => 'TC/2016/00001 - Lodgement Fee',
-        'return_url' => 'https://replace-me-with-localhost.com/liabilities/7f475fde-b509-4612-bffb-e2dac0066f4c/post_pay',
+        'return_url' => 'https://www-integration-2.pymnt.uk/liabilities/7f475fde-b509-4612-bffb-e2dac0066f4c/post_pay',
         'reference' => '7G20160725115358',
         'created_date' => '2016-07-25T10:54:00.294Z',
         '_links' => {
@@ -110,13 +110,12 @@ module GovpayExample
   end
 end
 
-RSpec.shared_examples 'govpay payment response' do |fee|
-  let(:govpay_payment_id) { 'rmpaurrjuehgpvtqg997bt50f' }
+RSpec.shared_examples 'govpay payment response' do |fee, govpay_payment_id|
   include GovpayExample::Responses
 
   let(:request_body) {
     {
-      return_url: "http://example.com/fees/#{fee.id}/post_pay",
+      return_url: 'the_return_url',
       description: fee.description,
       reference: fee.govpay_reference,
       amount: fee.amount
@@ -145,13 +144,12 @@ RSpec.shared_examples 'govpay payment response' do |fee|
   end
 end
 
-RSpec.shared_examples 'govpay returns a 404' do
-  let!(:fee) { create(:fee) }
+RSpec.shared_examples 'govpay returns a 404' do |fee|
 
   let(:request_body) {
     {
-      return_url: CGI.unescape(post_pay_fee_url(fee)),
-      description: fee.govpay_description,
+      return_url: 'the_return_url',
+      description: fee.description,
       reference: fee.govpay_reference,
       amount: fee.amount
     }.to_json
@@ -170,9 +168,7 @@ RSpec.shared_examples 'govpay returns a 404' do
   end
 end
 
-RSpec.shared_examples 'govpay post_pay returns a 500' do
-  let(:govpay_payment_id) { 'rmpaurrjuehgpvtqg997bt50f' }
-
+RSpec.shared_examples 'govpay post_pay returns a 500' do |govpay_payment_id|
   before do
     Excon.stub(
       {
@@ -190,14 +186,8 @@ RSpec.shared_examples 'govpay payment status times out' do
   include GovpayExample::Mocks
 
   before do
-    allow(Excon).to receive(:new).
-      with(Rails.configuration.glimr_api_url, anything).
-      and_return(glimr_api_call)
-
     expect(Excon).to receive(:new).
-      with(Rails.configuration.govpay_api_url, anything).
       and_return(
-        a_create_payment_success(initial_payment_response),
         a_payment_status_timeout
       )
   end
@@ -208,12 +198,7 @@ RSpec.shared_examples 'govpay create payment times out' do
   include GovpayExample::Mocks
 
   before do
-    allow(Excon).to receive(:new).
-      with(Rails.configuration.glimr_api_url, anything).
-      and_return(glimr_api_call)
-
     expect(Excon).to receive(:new).
-      with(Rails.configuration.govpay_api_url, anything).
       and_return(a_create_payment_timeout)
   end
 end

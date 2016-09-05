@@ -8,6 +8,4 @@ RSpec::Core::RakeTask.new(:spec) do |t|
 end
 task default: :spec
 
-RSpec::Core::RakeTask.new(:spec)
-
-task default: :spec
+load 'tasks/mutant.rake'

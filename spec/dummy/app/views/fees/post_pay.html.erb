@@ -1,0 +1,7 @@
+<% if @govuk_pay_unavailable %>
+  <%= @govuk_pay_unavailable %>
+<% else %>
+  <%= @fee.case_reference %>
+  <%= @fee.case_title %>
+  <%= @fee.govpay_payment_id %>
+<% end %>

@@ -14,11 +14,14 @@ ActiveRecord::Schema.define(version: 20160606133153) do
 
   create_table "fees", force: :cascade do |t|
     t.string  "case_title"
+    t.string  "case_reference"
     t.string  "description"
     t.integer "amount"
     t.integer "glimr_id"
     t.string  "govpay_reference"
     t.string  "govpay_payment_id"
+    t.string  "govpay_payment_status"
+    t.string  "govpay_payment_message"
   end
 
 end
