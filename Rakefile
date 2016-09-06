@@ -9,3 +9,4 @@ end
 task default: :spec
 
 load 'tasks/mutant.rake'
+load 'tasks/rubocop.rake'

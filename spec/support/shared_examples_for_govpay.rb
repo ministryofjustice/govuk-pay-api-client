@@ -59,22 +59,6 @@ module GovpayExample
           'next_url' => {
             'href' => 'https://www-integration-2.pymnt.uk/secure/94b35000-37f2-44e6-a2f5-c0193ca1e98a',
             'method' => 'GET'
-          },
-          'next_url_post' => {
-            'type' => 'application/x-www-form-urlencoded',
-            'params' => {
-              'chargeTokenId' => '94b35000-37f2-44e6-a2f5-c0193ca1e98a'
-            },
-            'href' => 'https://www-integration-2.pymnt.uk/secure',
-            'method' => 'POST'
-          },
-          'events' => {
-            'href' => 'https://publicapi.pymnt.uk/v1/payments/rmpaurrjuehgpvtqg997bt50fm/events',
-            'method' => 'GET'
-          },
-          'cancel' => {
-            'href' => 'https://publicapi.pymnt.uk/v1/payments/rmpaurrjuehgpvtqg997bt50fm/cancel',
-            'method' => 'POST'
           }
         }
       }.to_json
