@@ -24,5 +24,17 @@ RSpec.describe GovukPayApiClient::CreatePayment do
         'https://www-integration-2.pymnt.uk/secure/94b35000-37f2-44e6-a2f5-c0193ca1e98a'
     )
   end
+
+  it 'requires a fee object' do
+    expect {
+      described_class.call(nil, 'the_return_url')
+    }.to raise_error(GovukPayApiClient::RequiresFeeObject)
+  end
+
+  it 'requires a return_url' do
+    expect {
+      described_class.call(fee, nil)
+    }.to raise_error(GovukPayApiClient::RequiresReturnUrl)
+  end
 end
 
