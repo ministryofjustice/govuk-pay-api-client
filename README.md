@@ -6,14 +6,6 @@ A simple client to integrate with the Govuk Pay payment gateway.
 
 ## Usage
 
-### Errors
-
-If any `GovukPayApiClient` post or get request returns a status in the
-400 to 599 range, the client will raise
-`GovukPayApiClient::Unavailable`.  It will also raise
-`GovukPayApiClient::Unavailable` if the connection times out or is
-otherwise unavailable.
-
 ### Create Payment
 
 ```ruby
@@ -47,7 +39,16 @@ therefore raise `GovukPayApiClient::Unavailable` errors.
 `GovukPayApiClient::RequiresFeeObject` will be raised if a fee object is
 not supplied.
 
-### Examples
+### Errors
+
+If any `GovukPayApiClient` post or get request returns a status in the
+400 to 599 range, the client will raise
+`GovukPayApiClient::Unavailable`.  It will also raise
+`GovukPayApiClient::Unavailable` if the connection times out or is
+otherwise unavailable.
+
+
+## Examples
 
 See the dummy Rails app in `/spec/dummy` for examples of how the gem might
 be used in a production environment.

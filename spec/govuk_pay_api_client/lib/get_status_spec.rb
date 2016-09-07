@@ -21,7 +21,7 @@ RSpec.describe GovukPayApiClient::GetStatus do
 
   it 'requires a fee' do
     expect{ described_class.call }.
-      to raise_error(GovukPayApiClient::GetStatus::FeeRequired)
+      to raise_error(GovukPayApiClient::RequiresFeeObject)
   end
 
   it 'exposes the received status' do
