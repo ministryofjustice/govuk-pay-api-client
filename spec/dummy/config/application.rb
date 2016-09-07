@@ -3,6 +3,7 @@ require_relative 'boot'
 require 'rails/all'
 
 Bundler.require(*Rails.groups)
+require 'govuk_pay_api_client'
 
 module Dummy
   class Application < Rails::Application

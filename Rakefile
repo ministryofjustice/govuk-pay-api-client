@@ -1,3 +1,7 @@
+APP_RAKEFILE = File.expand_path("../spec/dummy/Rakefile", __FILE__)
+load 'rails/tasks/engine.rake'
+load 'rails/tasks/statistics.rake'
+
 require 'bundler/gem_tasks'
 require 'rspec/core/rake_task'
 
@@ -8,6 +12,5 @@ RSpec::Core::RakeTask.new(:spec) do |t|
 end
 task default: :spec
 
-RSpec::Core::RakeTask.new(:spec)
-
-task default: :spec
+load 'tasks/mutant.rake'
+load 'tasks/rubocop.rake'

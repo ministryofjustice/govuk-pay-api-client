@@ -2,4 +2,9 @@
   An app that needed to process payments would normally re-direct to this URL.
   This is exposed in this way here for ease of testing.
 </h1>
-<%= @payment.payment_url %>
+
+<% if @govuk_pay_unavailable %>
+  <%= @govuk_pay_unavailable %>
+<% else %>
+  <%= @payment.next_url %>
+<% end %>
