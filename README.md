@@ -14,8 +14,8 @@ GovukPayApiClient::CreatePayment.call(<fee object>, <url to return to>)
 
 The first argument is a fee object that must repond to `#description`
 (text), `#reference` (string), and `#amount` (integer, in pence). The
-second object is a url string that tell the Govuk Pay gateway where to
-return the user after a successful payment.  Both are required.
+second object is a url string that tells the Gov UK Pay gateway where to
+redirect the user after a successful payment.  Both are required.
 
 `GovukPayApiClient::RequiresFeeObject` will be raised if a fee object is
 not supplied.
@@ -30,7 +30,7 @@ GovukPayApiClient::GetStatus.call(<fee object>)
 ```
 
 Requires a fee object that must respond to `#govpay_payment_id`, which
-should return an id that is valid on the Govuk Pay gateway.
+should return an id that is valid on the Gov UK Pay gateway.
 
 It returns an object with the method `#status` for a successful calls.
 Unsuccessful calls raise errors in the 400 to 599 status range and will
