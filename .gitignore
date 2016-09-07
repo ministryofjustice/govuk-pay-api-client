@@ -14,3 +14,4 @@ spec/dummy/db/
 spec/dummy/db/*
 spec/dummy/tmp/*
 spec/dummy/tmp/
+*.gem

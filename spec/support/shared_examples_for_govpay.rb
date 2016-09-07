@@ -1,29 +1,5 @@
 module GovpayExample
   module Mocks
-    def glimr_api_call
-      class_double(
-        Excon,
-        'glimr availability check',
-        post: instance_double(
-          Excon::Response,
-          status: 200,
-          body: { glimrAvailable: 'yes' }.to_json
-        )
-      )
-    end
-
-    def a_create_payment_success(initial_payment_response)
-      class_double(
-        Excon,
-        'glimr availability check',
-        post: instance_double(
-          Excon::Response,
-          status: 200,
-          body: initial_payment_response
-        )
-      )
-    end
-
     def a_create_payment_timeout
       class_double(Excon, 'create payment timeout').tap { |ex|
         expect(ex).to receive(:post).and_raise(Excon::Errors::Timeout)
