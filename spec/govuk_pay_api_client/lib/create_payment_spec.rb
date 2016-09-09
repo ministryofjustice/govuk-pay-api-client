@@ -25,6 +25,10 @@ RSpec.describe GovukPayApiClient::CreatePayment do
     )
   end
 
+  it 'exposes the payment_id provided by the api' do
+    expect(subject.payment_id).to eq('rmpaurrjuehgpvtqg997bt50f')
+  end
+
   it 'requires a fee object' do
     expect {
       described_class.call(nil, 'the_return_url')
