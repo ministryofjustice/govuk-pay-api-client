@@ -23,7 +23,8 @@ module GovukPayApiClient
 
     def parsed_response
       OpenStruct.new(
-        next_url: response_body.fetch(:_links).fetch(:next_url).fetch(:href)
+        next_url: response_body.fetch(:_links).fetch(:next_url).fetch(:href),
+        payment_id: response_body.fetch(:payment_id)
       )
     end
 
