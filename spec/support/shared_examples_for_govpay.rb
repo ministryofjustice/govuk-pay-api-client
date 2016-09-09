@@ -1,18 +1,4 @@
 module GovpayExample
-  module Mocks
-    def a_create_payment_timeout
-      class_double(Excon, 'create payment timeout').tap { |ex|
-        expect(ex).to receive(:post).and_raise(Excon::Errors::Timeout)
-      }
-    end
-
-    def a_payment_status_timeout
-      class_double(Excon, 'create payment timeout').tap { |ex|
-        expect(ex).to receive(:get).and_raise(Excon::Errors::Timeout)
-      }
-    end
-  end
-
   module Responses
     def initial_payment_response(payment_id = 'rmpaurrjuehgpvtqg997bt50f')
       {
@@ -141,24 +127,30 @@ RSpec.shared_examples 'govpay post_pay returns a 500' do |govpay_payment_id|
   end
 end
 
-RSpec.shared_examples 'govpay payment status times out' do
+RSpec.shared_examples 'govpay payment status times out' do |govpay_payment_id|
   include GovpayExample::Responses
-  include GovpayExample::Mocks
 
   before do
-    expect(Excon).to receive(:new).
-      and_return(
-        a_payment_status_timeout
-      )
+    Excon.stub(
+      {
+        method: :get,
+        host: 'govpay-test.dsd.io',
+        path: "/payments/#{govpay_payment_id}"
+      }
+    ) { raise Excon::Errors::Timeout }
   end
 end
 
 RSpec.shared_examples 'govpay create payment times out' do
   include GovpayExample::Responses
-  include GovpayExample::Mocks
 
   before do
-    expect(Excon).to receive(:new).
-      and_return(a_create_payment_timeout)
+    Excon.stub(
+      {
+        method: :post,
+        host: 'govpay-test.dsd.io',
+        path: '/payments'
+      }
+    ) { raise Excon::Errors::Timeout }
   end
 end

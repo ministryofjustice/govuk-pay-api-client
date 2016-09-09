@@ -75,7 +75,7 @@ RSpec.feature 'process payment' do
     end
 
     context 'govuk get_status times out' do
-      include_examples 'govpay payment status times out'
+      include_examples 'govpay payment status times out', govpay_payment_id
 
       it 'alerts the user to the failure' do
         visit "/fees/#{paid_fee.id}/post_pay"
