@@ -2,6 +2,10 @@ require 'rails_helper'
 require 'support/shared_examples_for_api_calls'
 
 RSpec.describe GovukPayApiClient::Api, '#post' do
+  let(:docpath) { '/v1' }
+  let(:api_endpoint) { 'endpoint' }
+  let(:path) { [docpath, api_endpoint].join('/') }
+
   include_examples 'anonymous object'
 
   it 'exposes an excon client' do
@@ -14,7 +18,7 @@ RSpec.describe GovukPayApiClient::Api, '#post' do
           "Content-Type" => "application/json",
           "Accept" => "application/json"
         },
-        path: '/endpoint',
+        path: path,
         persistent: true
       },
       status: 200, body: { response: 'response' }.to_json
@@ -30,7 +34,7 @@ RSpec.describe GovukPayApiClient::Api, '#post' do
       Excon.stub(
         {
           method: :post,
-          path: '/endpoint',
+          path: path,
         },
         status: 404
       )
@@ -41,7 +45,7 @@ RSpec.describe GovukPayApiClient::Api, '#post' do
       Excon.stub(
         {
           method: :post,
-          path: '/endpoint',
+          path: path,
         },
         status: 500
       )

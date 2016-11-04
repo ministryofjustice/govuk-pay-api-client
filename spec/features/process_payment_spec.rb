@@ -66,6 +66,7 @@ RSpec.feature 'process payment' do
     end
 
     context 'govuk get_status returns a 500' do
+      let(:docpath) { '/v1' }
       include_examples 'govpay post_pay returns a 500', govpay_payment_id
 
       it 'alerts the user to the failure' do
