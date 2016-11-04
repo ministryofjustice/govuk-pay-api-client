@@ -1,5 +1,9 @@
 module GovpayExample
   module Responses
+    def docpath
+      '/v1'
+    end
+
     def initial_payment_response(payment_id = 'rmpaurrjuehgpvtqg997bt50f')
       {
         'payment_id' => payment_id,
@@ -74,7 +78,7 @@ RSpec.shared_examples 'govpay payment response' do |fee, govpay_payment_id|
         method: :post,
         host: 'govpay-test.dsd.io',
         body: request_body,
-        path: '/payments'
+        path: "#{docpath}/payments"
       },
       status: 201, body: initial_payment_response(govpay_payment_id)
     )
@@ -83,7 +87,7 @@ RSpec.shared_examples 'govpay payment response' do |fee, govpay_payment_id|
       {
         method: :get,
         host: 'govpay-test.dsd.io',
-        path: "/payments/#{govpay_payment_id}"
+        path: "#{docpath}/payments/#{govpay_payment_id}"
       },
       status: 200, body: post_pay_response
     )
@@ -107,7 +111,7 @@ RSpec.shared_examples 'govpay returns a 404' do |fee|
         method: :post,
         host: 'govpay-test.dsd.io',
         body: request_body,
-        path: '/payments'
+        path: "#{docpath}/payments"
       },
       status: 404
     )
@@ -120,7 +124,7 @@ RSpec.shared_examples 'govpay post_pay returns a 500' do |govpay_payment_id|
       {
         method: :get,
         host: 'govpay-test.dsd.io',
-        path: "/payments/#{govpay_payment_id}"
+        path: "#{docpath}/payments/#{govpay_payment_id}"
       },
       status: 500, body: '{"message":"Govpay is not working"}'
     )
@@ -135,7 +139,7 @@ RSpec.shared_examples 'govpay payment status times out' do |govpay_payment_id|
       {
         method: :get,
         host: 'govpay-test.dsd.io',
-        path: "/payments/#{govpay_payment_id}"
+        path: "#{docpath}/payments/#{govpay_payment_id}"
       }
     ) { raise Excon::Errors::Timeout }
   end
@@ -149,7 +153,7 @@ RSpec.shared_examples 'govpay create payment times out' do
       {
         method: :post,
         host: 'govpay-test.dsd.io',
-        path: '/payments'
+        path: "#{docpath}/payments"
       }
     ) { raise Excon::Errors::Timeout }
   end

@@ -2,6 +2,10 @@ require 'rails_helper'
 require 'support/shared_examples_for_api_calls'
 
 RSpec.describe GovukPayApiClient::Api, '#get' do
+  let(:docpath) { '/v1' }
+  let(:api_endpoint) { 'endpoint' }
+  let(:path) { [docpath, api_endpoint].join('/') }
+
   include_examples 'anonymous object'
 
   it 'exposes an excon client' do
@@ -13,7 +17,7 @@ RSpec.describe GovukPayApiClient::Api, '#get' do
           "Content-Type" => "application/json",
           "Accept" => "application/json"
         },
-        path: '/endpoint',
+        path: path,
         persistent: true
       },
       status: 200, body: { response: 'response' }.to_json
@@ -29,7 +33,7 @@ RSpec.describe GovukPayApiClient::Api, '#get' do
       Excon.stub(
         {
           method: :get,
-          path: '/endpoint',
+          path: path,
         },
         status: 404
       )
@@ -40,7 +44,7 @@ RSpec.describe GovukPayApiClient::Api, '#get' do
       Excon.stub(
         {
           method: :get,
-          path: '/endpoint',
+          path: path,
         },
         status: 500
       )
@@ -53,7 +57,7 @@ RSpec.describe GovukPayApiClient::Api, '#get' do
       Excon.stub(
         {
           method: :get,
-          path: '/endpoint',
+          path: path,
         },
         status: 400
       )
@@ -64,7 +68,7 @@ RSpec.describe GovukPayApiClient::Api, '#get' do
       Excon.stub(
         {
           method: :get,
-          path: '/endpoint',
+          path: path,
         },
         status: 599
       )
@@ -77,7 +81,7 @@ RSpec.describe GovukPayApiClient::Api, '#get' do
       Excon.stub(
         {
           method: :get,
-          path: '/endpoint',
+          path: path,
         },
         status: 399
       )
@@ -88,26 +92,11 @@ RSpec.describe GovukPayApiClient::Api, '#get' do
       Excon.stub(
         {
           method: :get,
-          path: '/endpoint',
+          path: path,
         },
         status: 600
       )
       expect { object.get }.not_to raise_error
-    end
-  end
-
-  context 'the client dies without returning' do
-    let(:excon) {
-      class_double(Excon)
-    }
-
-    before do
-      expect(excon).to receive(:get).and_raise(Excon::Error, 'it died')
-      expect(object).to receive(:client).and_return(excon)
-    end
-
-    it 'raises an exception if the client dies' do
-      expect { object.get }.to raise_error(GovukPayApiClient::Unavailable, 'it died')
     end
   end
 
@@ -120,7 +109,7 @@ RSpec.describe GovukPayApiClient::Api, '#get' do
           "Content-Type" => "application/json",
           "Accept" => "application/json"
         },
-        path: '/endpoint',
+        path: path,
         persistent: true
       },
       status: 201

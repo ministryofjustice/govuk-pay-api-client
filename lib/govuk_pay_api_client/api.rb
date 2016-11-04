@@ -11,23 +11,21 @@ module GovukPayApiClient
     end
 
     def post
-      @post ||=
-        client.post(path: endpoint, body: request_body.to_json).tap { |resp|
-          # Only timeouts and network issues raise errors.
-          handle_response_errors(resp)
-          @body = resp.body
-        }
+      client("#{api_url}#{endpoint}").post(body: request_body.to_json).tap { |resp|
+        # Only timeouts and network issues raise errors.
+        handle_response_errors(resp)
+        @body = resp.body
+      }
     rescue Excon::Error => e
       raise Unavailable, e
     end
 
     def get
-      @get ||=
-        client.get(path: endpoint).tap { |resp|
-          # Only timeouts and network issues raise errors.
-          handle_response_errors(resp)
-          @body = resp.body
-        }
+      client("#{api_url}#{endpoint}").get.tap { |resp|
+        # Only timeouts and network issues raise errors.
+        handle_response_errors(resp)
+        @body = resp.body
+      }
     rescue Excon::Error => e
       raise Unavailable, e
     end
@@ -46,9 +44,13 @@ module GovukPayApiClient
       end
     end
 
-    def client
-      @client ||= Excon.new(
-        ENV.fetch('GOVUK_PAY_API_URL'),
+    def api_url
+      ENV.fetch('GOVUK_PAY_API_URL')
+    end
+
+    def client(uri)
+      Excon.new(
+        uri,
         headers: {
           'Authorization' => "Bearer #{ENV.fetch('GOVUK_PAY_API_KEY')}",
           'Content-Type' => 'application/json',
