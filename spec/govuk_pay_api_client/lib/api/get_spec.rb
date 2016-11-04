@@ -8,6 +8,20 @@ RSpec.describe GovukPayApiClient::Api, '#get' do
 
   include_examples 'anonymous object'
 
+  context 'the client dies without returning' do
+    let(:client) { Object.new }
+
+    before do
+      allow(Excon).to receive(:new).and_return(client)
+      allow(client).to receive(:get).and_raise(Excon::Error, 'it died')
+    end
+
+    it 'raises an exception if the client dies' do
+      expect { object.get }.to raise_error(GovukPayApiClient::Unavailable, 'it died')
+    end
+  end
+
+
   it 'exposes an excon client' do
     Excon.stub(
       {
